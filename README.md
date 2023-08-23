@@ -1,5 +1,7 @@
 # A Go-based E.164 Phone Number Validator API
 
+https://github.com/settermjd/go-e164-phone-number-validator-api/actions/workflows/go.yml/badge.svg
+
 This is a small project that shows how to validate a phone number as being in [E.164 format](https://www.twilio.com/docs/glossary/what-e164) or not, using Go and its [net/http](https://pkg.go.dev/net/http) package (among others).
 
 It isn't mean to be a production-ready application, rather one that just shows the essentials of what's required to validate a phone number as being in E.164 format, or not, wrapped in a small API.
