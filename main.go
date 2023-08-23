@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,21 +17,34 @@ func IsValidPhoneNumber(phone_number string) bool {
 	return re.Find([]byte(phone_number)) != nil
 }
 
+type Response struct {
+	Data string
+}
+
 func validate(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	phone_number := r.FormValue("phone_number")
 	if phone_number == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("No phone number was provided\n"))
+		json.NewEncoder(w).Encode(Response{
+			Data: "No phone number was provided\n",
+		})
 		return
 	}
 
 	if IsValidPhoneNumber(phone_number) {
 		w.Write([]byte(fmt.Sprintf("[%s] is a valid phone number", phone_number)))
+		json.NewEncoder(w).Encode(Response{
+			Data: fmt.Sprintf("[%s] is a valid phone number", phone_number),
+		})
 		return
 	}
 
 	w.WriteHeader(http.StatusBadRequest)
-	w.Write([]byte(fmt.Sprintf("[%s] is NOT a valid phone number", phone_number)))
+	json.NewEncoder(w).Encode(Response{
+		Data: fmt.Sprintf("[%s] is NOT a valid phone number", phone_number),
+	})
 }
 
 func main() {
